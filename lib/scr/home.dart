@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:developer' as dev;
 
 Timer? debouncer;
 const String ass = "assest/";
@@ -75,6 +76,77 @@ extension TimeOfDayConverter on TimeOfDay {
     final hour = this.hour.toString().padLeft(2, "0");
     final min = minute.toString().padLeft(2, "0");
     return "$hour:$min";
+  }
+}
+
+extension Boolparseing on bool {
+  int tobool() {
+    return this == false ? 0 : 1;
+  }
+}
+
+extension RouterContext on BuildContext {
+  toNavigate(Widget classname) {
+    Navigator.push(this, MaterialPageRoute(builder: (_) => classname));
+  }
+}
+
+extension TimeOfDayConverterinmin on TimeOfDay {
+  String tomin() {
+    return "${hour * 60 + minute}";
+  }
+}
+
+TimeOfDay stringToTimeOfDay(String time) {
+  return TimeOfDay(
+      hour: int.parse(time.split(":")[0]),
+      minute: int.parse(time.split(":")[1]));
+}
+
+void printf(value, {String name = 'api'}) {
+  dev.log(
+    value.toString(),
+    name: name,
+  );
+}
+
+void printd(value) {
+  debugPrint(value.toString());
+}
+
+extension Navigationpop on Widget {
+  void navigationpop(
+      {required BuildContext context, bool isberrerdismissible = true}) {
+    showGeneralDialog(
+        barrierLabel: 'Profile info',
+        barrierDismissible: isberrerdismissible,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: const Duration(milliseconds: 300),
+        context: context,
+        transitionBuilder: (context, anim1, anim2, child) {
+          return SlideTransition(
+            position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0))
+                .animate(anim1),
+            child: child,
+          );
+        },
+        pageBuilder: (context, anim1, anim2) {
+          return Align(
+            alignment: Alignment.center,
+            child: Container(
+              // height: 400,
+              width: 350,
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Material(
+                child: Container(color: Colors.white, child: this),
+              ),
+            ),
+          );
+        });
   }
 }
 
