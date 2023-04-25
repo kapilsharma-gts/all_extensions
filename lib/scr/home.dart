@@ -57,6 +57,27 @@ extension Unique<E, Id> on List<E> {
   }
 }
 
+extension NumDurationExtensions on num {
+  Duration get microseconds => Duration(microseconds: round());
+  Duration get milliseconds => Duration(microseconds: (this * 1000).round());
+  Duration get seconds => Duration(microseconds: (this * 1000 * 1000).round());
+  Duration get minutes =>
+      Duration(microseconds: (this * 1000 * 1000 * 60).round());
+  Duration get hours =>
+      Duration(microseconds: (this * 1000 * 1000 * 60 * 60).round());
+  Duration get days =>
+      Duration(microseconds: (this * 1000 * 1000 * 60 * 60 * 24).round());
+  Duration get ms => milliseconds;
+}
+
+extension TimeOfDayConverter on TimeOfDay {
+  String to24hours() {
+    final hour = this.hour.toString().padLeft(2, "0");
+    final min = minute.toString().padLeft(2, "0");
+    return "$hour:$min";
+  }
+}
+
 extension ExtendedString on String {
   /// The string without any whitespace.
   String removeAllWhitespace() {
@@ -67,4 +88,13 @@ extension ExtendedString on String {
 
 Future<String> getFileData(String path) async {
   return await rootBundle.loadString(path);
+}
+
+extension EmptyPadding on num {
+  SizedBox get h => SizedBox(
+        height: toDouble(),
+      );
+  SizedBox get w => SizedBox(
+        width: toDouble(),
+      );
 }
